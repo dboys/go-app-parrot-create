@@ -1,0 +1,17 @@
+.column {
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+}
+
+.row-fluid {  
+    overflow: hidden;   
+}
+
+.btn-link {
+    color: black;
+}
+
+.well [class^="span"] + [class^="span"] {
+    border-left: 1px solid #e3e3e3;
+    padding-left: 20px;
+}
