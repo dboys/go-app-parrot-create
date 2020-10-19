@@ -2,42 +2,69 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 )
 
-func TestHLLTemplate(t *testing.T) {
-	testParams := []*ParrotParams{
-		&ParrotParams{
-			Name:        "lang 1",
-			Revision:    parrotRevision,
-			BuildSystem: buildNqp,
-			TestSystem:  testRosellaNqp,
-			PMC:         true,
-			OPS:         true,
-			DOC:         true,
-		},
-		&ParrotParams{
-			Name:        "lang 2",
-			Revision:    parrotRevision,
-			BuildSystem: buildWinxed,
-			TestSystem:  testPerl5,
-			PMC:         false,
-			OPS:         true,
-			DOC:         false,
-		},
-		&ParrotParams{
-			Name:        "lang 3",
-			Revision:    parrotRevision,
-			BuildSystem: buildPerl5,
-			TestSystem:  testRosellaWinxed,
-			PMC:         false,
-			OPS:         true,
-			DOC:         false,
-		},
-	}
+type testCase struct {
+	ttType int
+	params *ParrotParams
+}
 
-	for _, params := range testParams {
+var hllTestParams []*ParrotParams = []*ParrotParams{
+	&ParrotParams{
+		Name:        "lang 1",
+		Revision:    parrotRevision,
+		BuildSystem: buildNqp,
+		TestSystem:  testRosellaNqp,
+		PMC:         true,
+		OPS:         true,
+		DOC:         true,
+	},
+	&ParrotParams{
+		Name:        "lang 2",
+		Revision:    parrotRevision,
+		BuildSystem: buildWinxed,
+		TestSystem:  testPerl5,
+		PMC:         false,
+		OPS:         true,
+		DOC:         false,
+	},
+	&ParrotParams{
+		Name:        "lang 3",
+		Revision:    parrotRevision,
+		BuildSystem: buildPerl5,
+		TestSystem:  testRosellaWinxed,
+		PMC:         false,
+		OPS:         true,
+		DOC:         false,
+	},
+}
+
+var libraryTestParams []*ParrotParams = []*ParrotParams{
+	&ParrotParams{
+		Name:        "library 1",
+		Revision:    parrotRevision,
+		BuildSystem: buildPir,
+		TestSystem:  testRosellaWinxed,
+	},
+	&ParrotParams{
+		Name:        "library 2",
+		Revision:    parrotRevision,
+		BuildSystem: buildNqp,
+		TestSystem:  testPerl5,
+	},
+	&ParrotParams{
+		Name:        "library 2",
+		Revision:    parrotRevision,
+		BuildSystem: buildWinxed,
+		TestSystem:  testRosellaNqp,
+	},
+}
+
+func TestHLLTemplate(t *testing.T) {
+	for _, params := range hllTestParams {
 		tt := NewTemplate(parrotHLL, params)
 
 		res, err := tt.generateTemplate()
@@ -75,28 +102,7 @@ func TestHLLTemplate(t *testing.T) {
 }
 
 func TestLibraryTemplate(t *testing.T) {
-	testParams := []*ParrotParams{
-		&ParrotParams{
-			Name:        "library 1",
-			Revision:    parrotRevision,
-			BuildSystem: buildPir,
-			TestSystem:  testRosellaWinxed,
-		},
-		&ParrotParams{
-			Name:        "library 2",
-			Revision:    parrotRevision,
-			BuildSystem: buildNqp,
-			TestSystem:  testPerl5,
-		},
-		&ParrotParams{
-			Name:        "library 2",
-			Revision:    parrotRevision,
-			BuildSystem: buildWinxed,
-			TestSystem:  testRosellaNqp,
-		},
-	}
-
-	for _, params := range testParams {
+	for _, params := range libraryTestParams {
 		tt := NewTemplate(parrotLibrary, params)
 
 		res, err := tt.generateTemplate()
@@ -127,5 +133,65 @@ func TestLibraryTemplate(t *testing.T) {
 				t.Errorf("'%s' test failed cause '%s' is missing in template", test.name, test.tt)
 			}
 		}
+	}
+}
+
+func TestGenerate(t *testing.T) {
+	var (
+		testCases []*testCase
+		archive   []string
+	)
+
+	for _, hllParams := range hllTestParams {
+		testCases = append(testCases, &testCase{parrotHLL, hllParams})
+	}
+
+	for _, libParams := range libraryTestParams {
+		testCases = append(testCases, &testCase{parrotLibrary, libParams})
+	}
+
+	for _, test := range testCases {
+		testParam := test.params
+		ttType := test.ttType
+		cache = map[ParrotParams]string{}
+
+		tt := NewTemplate(ttType, testParam)
+
+		if len(cache) > 0 {
+			t.Error("Cache should be empty before generation")
+		}
+
+		zip, err := tt.Generate()
+		if err != nil {
+			t.Error(err)
+		}
+
+		if _, err = os.Stat(zip); os.IsNotExist(err) {
+			t.Errorf("'%s' archive is not exists", zip)
+		}
+
+		if _, ok := cache[*testParam]; !ok {
+			t.Errorf("'%s' is missing in cache", zip)
+		}
+
+		tt2 := NewTemplate(ttType, testParam)
+		zip2, err := tt2.Generate()
+		if err != nil {
+			t.Error(err)
+		}
+
+		if zip != zip2 {
+			t.Errorf("'%s' is not equal '%s'", zip, zip2)
+		}
+
+		if len(cache) > 1 {
+			t.Error("Cache doesn't work propely")
+		}
+
+		archive = append(archive, zip, zip2)
+	}
+
+	for _, zip := range archive {
+		_ = os.RemoveAll(zip)
 	}
 }
