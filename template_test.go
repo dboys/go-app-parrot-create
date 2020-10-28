@@ -153,11 +153,11 @@ func TestGenerate(t *testing.T) {
 	for _, test := range testCases {
 		testParam := test.params
 		ttType := test.ttType
-		cache = map[ParrotParams]string{}
+		cacheTmpl = map[ParrotParams]string{}
 
 		tt := NewTemplate(ttType, testParam)
 
-		if len(cache) > 0 {
+		if len(cacheTmpl) > 0 {
 			t.Error("Cache should be empty before generation")
 		}
 
@@ -170,7 +170,7 @@ func TestGenerate(t *testing.T) {
 			t.Errorf("'%s' archive is not exists", zip)
 		}
 
-		if _, ok := cache[*testParam]; !ok {
+		if _, ok := cacheTmpl[*testParam]; !ok {
 			t.Errorf("'%s' is missing in cache", zip)
 		}
 
@@ -184,7 +184,7 @@ func TestGenerate(t *testing.T) {
 			t.Errorf("'%s' is not equal '%s'", zip, zip2)
 		}
 
-		if len(cache) > 1 {
+		if len(cacheTmpl) > 1 {
 			t.Error("Cache doesn't work propely")
 		}
 

@@ -36,7 +36,7 @@ const (
 	parrotLibraryTmpl = "project-templates/library.parrot"
 )
 
-var cache map[ParrotParams]string = map[ParrotParams]string{}
+var cacheTmpl map[ParrotParams]string = map[ParrotParams]string{}
 
 type BuildSystem string
 
@@ -214,7 +214,7 @@ func (p *ParrotTemplate) Generate() (string, error) {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
 
-	if val, ok := cache[*p.Params]; ok {
+	if val, ok := cacheTmpl[*p.Params]; ok {
 		return val, nil
 	}
 
@@ -233,7 +233,7 @@ func (p *ParrotTemplate) Generate() (string, error) {
 		return "", err
 	}
 
-	cache[*p.Params] = zip
+	cacheTmpl[*p.Params] = zip
 
 	return zip, nil
 }

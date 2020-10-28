@@ -1,0 +1,278 @@
+{{ define "main" }}
+<div class="masthead">
+        <ul class="nav nav-pills pull-right">
+                <li id="newlang" class="active"><a href="#">Language</a></li>
+                <li id="newlib"><a href="#">Library</a></li>
+        </ul>
+        <h3 class="muted">Parrot Creator</h3>
+</div>
+
+<hr>
+
+<div id="newlib-content" class="row-fluid" style="display: none" >
+    <div id="newlib-info" class="span8 hero-unit column">
+        <h1>Parrot library</h1>
+        <p>Libraries are pre-compiled code files that can be loaded into Parrot.
+        A lot of examples allow easily create your own solutions.
+        </p>
+        <p><a href="https://github.com/letolabs/parrot-libgit2" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+    </div>
+    
+    <div id="newlib-options" class="well span4 column">
+        <form action="/" method="post">
+
+            <div class="control-group" id="lib-name-group">
+                <label class="control-label" for="lib_name">Library Name:</label>
+                <div class="controls">
+                    <input class="input" name="lib_name" id="lib_name" type="text" placeholder="Name">
+                    <span class="help-inline" id="lib-msg"></span>
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label" for="lib_builder">Library Builders:</label>
+                <div class="controls">
+                    <select name="lib_builder">
+                        <option selected="true">Winxed</option>
+                        <option>NQP (Not Quite Perl 6)</option>
+                        <option>PIR (Parrot Intermediate Representation)</option>
+                        <option>Perl 5</option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label" for="lib_test">Test Suite:</label>
+                <div class="controls"> 
+                    <select name="lib_test">
+                        <option selected="true">Rosella (Winxed)</option>
+                        <option>Rosella (NQP)</option>
+                        <option>Perl 5</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="lib_parrot_revision">Parrot Revision:</label>
+                <div class="controls"> 
+                    <select name="lib_parrot_revision">
+                        <option selected="true">5.3.0</option>
+                    </select>
+                </div>
+            </div>
+
+            <div align="center">
+                <button class="btn btn-large btn-success" name="lib" id="lib_btn" disabled="disabled" type="submit">Download</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="newlang-content" class="row-fluid" >
+    <div id="newlang-info" class="span8 hero-unit column">
+        <h1>Parrot: DSL Toolbox</h1>
+        <p>
+
+            Parrot Virtual Machine is a collection of powerful tools to make
+            writing a compiler or Domain Specific Language (DSL) as easy as
+            possible.
+        </p>
+        <p>
+
+            The Parrot Compiler Toolkit (PCT) is a collection of tools for
+            language developers that provide various "pluggable" defaults.
+            For example, there is a default garbage collector, but you can
+            provide your own.
+        <p>
+        <a href="http://parrot.github.io/html/pct_tutorial.html" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+    </div>
+    
+    <div id="newlang-options" class="well span4 column">
+        <form id="hll_form" action="/" method="post">
+            
+            <div class="control-group" id="hll-name-group">
+                <label class="control-label" for="hll_name">HLL Name:</label>
+                <div class="controls">
+                    <input class="input" name="hll_name" id="hll_name" type="text" placeholder="Name">
+                    <span class="help-inline" id="hll-msg"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="hll_builder">HLL Builders:</label>
+                <div class="controls">
+                    <select name="hll_builder">
+                        <option selected="true">Winxed</option>
+                        <option>NQP (Not Quite Perl 6)</option>
+                        <option>PIR (Parrot Intermediate Representation)</option>
+                        <option>Perl 5</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="hll_test">Test Harness:</label>
+                <div class="controls"> 
+                    <select name="hll_test">
+                        <option selected="true">Rosella (Winxed)</option>
+                        <option>Rosella (NQP)</option>
+                        <option>Perl 5</option>
+                    </select>
+                </div>
+            </div>
+            
+             <div class="control-group">
+                <label class="control-label" for="hll_parrot_revision">Parrot Revision:</label>
+                <div class="controls"> 
+                    <select name="hll_parrot_revision">
+                        <option selected="true">5.3.0</option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label">Options:</label>
+                <div class="controls btn-group" data-toggle="buttons-checkbox">
+                    <button id="pmc" rel="tooltip" title="allow to use aggregate data types such as arrays, associative arrays (Hashes), Exceptions, Structures, and Objects" name="pmc" value="0" type="button" class="btn btn-toggle">
+                        Custom PMCs
+                    </button>
+                    <button id="ops" rel="tooltip" title="allow to use opcodes. It are written using a very special syntax which is a mix of C and special keywords" name="ops" value="0" type="button" class="btn btn-toggle">
+                        Custom ops
+                    </button>
+                    <button id="doc" rel="tooltip" title="generate a pod-documentation" name="doc" value="0" type="button" class="btn btn-toggle">
+                        Doc templates
+                    </button>
+                    <input type="hidden" id="with_pmc" name="with_pmc" value="0">
+                    <input type="hidden" id="with_ops" name="with_ops" value="0">
+                    <input type="hidden" id="with_doc" name="with_doc" value="0">
+                </div>
+            </div>
+
+            <div align="center">
+                <button class="btn btn-large btn-success" disabled="disabled" name="hll" id="hll_btn" type="submit">Download</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<hr/>
+
+<div class="container-fluid well">
+    <div class="row-fluid">
+        <div class="span4 column">
+            <h4><a class="btn-link" href="http://en.wikipedia.org/wiki/Parrot_virtual_machine#Languages">Build Systems</a></h4>
+            <p><a class="btn-link" href="http://whiteknight.github.io/Rosella/winxed/">Winxed</a></p>
+            <p><a class="btn-link" href="http://en.wikibooks.org/wiki/Parrot_Virtual_Machine/Not_Quite_Perl">NQR</a></p>
+            <p><a class="btn-link" href="http://en.wikipedia.org/wiki/Parrot_intermediate_representation">PIR</a></p>
+            <p><a class="btn-link" href="http://en.wikipedia.org/wiki/Perl">Perl 5</a></p>
+        </div>
+    
+        <div class="span4 column">
+            <h4><a class="btn-link" href="http://docs.parrot.org/parrot/latest/html/docs/tests.pod.html">Test Systems</a></h4>
+            <p><a class="btn-link" href="http://whiteknight.github.io/Rosella/libraries/test.html#winxed">Rosella(Winxed)</a></p>
+            <p><a class="btn-link" href="http://whiteknight.github.io/Rosella/libraries/test.html#nqprx">Rosella(NQR)</a></p>
+            <p><a class="btn-link" href="http://docs.parrot.org/parrot/latest/html/docs/tests.pod.html#Testing_Perl5_components">Perl 5</a></p>
+        </div>
+        
+        <div class="span4 column">
+            <h4><a class="btn-link" href="http://docs.parrot.org/parrot/devel/html/docs/overview.pod.html">Options</a></h4>
+            <p><a class="btn-link" href="http://docs.parrot.org/parrot/latest/html/pmc.html">Custom PMCs</a></p>
+            <p><a class="btn-link" href="http://docs.parrot.org/parrot/latest/html/ops.html">Custom ops</a></p>
+            <p><a class="btn-link" href="http://docs.parrot.org/parrot/devel/html/pdds.html">Design Doc templates (POD)</a></p>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        var hll_name = false;
+        var lib_name = false;
+        
+        var with_pmc = false;
+        var with_ops = false;
+        var with_doc = false;
+        
+        $('#hll_form').submit(function(){
+            $('#with_pmc').val(+with_pmc);
+            $('#with_ops').val(+with_ops);
+            $('#with_doc').val(+with_doc);
+                
+            return true;
+        });
+        
+        $('#hll_name').bind('blur keyup', function() {
+            $('#hll-msg').html("");
+            var name = $('#hll_name').val();
+            
+            if (name == '') {
+                hll_name = false;
+                $('#hll-name-group').addClass('error');
+                $('#hll-msg').append('Field is empty');
+            }
+            else {
+                hll_name = true;
+                $('#hll-name-group').removeClass('error');
+            }
+            
+            enableDownload(hll_name,'#hll_btn');
+        });
+
+        $('#lib_name').bind('blur keyup', function() {
+            $('#lib-msg').html("");
+            var name = $('#lib_name').val();
+            
+            if (name == '') {
+                lib_name = false;
+                $('#lib-name-group').addClass('error');
+                $('#lib-msg').append('Field is empty');
+            }
+            else {
+                lib_name = true;
+                $('#lib-name-group').removeClass('error');
+            }
+            
+            enableDownload(lib_name,'#lib_btn');
+        });
+
+        $('ul.nav > li').click(function (e) {
+            e.preventDefault();
+            $('ul.nav > li').removeClass('active');
+            $(this).addClass('active');
+
+            $('#newlang-content').hide();
+            $('#newlib-content').hide()
+            
+            if ( this.id == "newlang") {
+                $('#newlang-content').show();
+            }
+            else if (this.id == "newlib") {
+                $('#newlib-content').show()
+            }
+        });
+
+        $('button').click(function () {
+            $(this).toggleClass("btn-primary");
+            if ($(this).attr("name") == "pmc") {
+                with_pmc = !with_pmc;
+            }
+            else if ($(this).attr("name") == "ops") {
+                with_ops = !with_ops;
+            }
+            else if ($(this).attr("name") == "doc") {
+                with_doc = !with_doc;
+            }
+        });     
+        
+        function enableDownload(enable,btn_id) {
+            if (enable) {
+                $(btn_id).removeAttr('disabled');
+            }
+            else {
+                $(btn_id).attr('disabled', 'disabled'); 
+            }
+        };
+    });
+</script>
+{{ end }}
