@@ -13,7 +13,7 @@ type testCase struct {
 }
 
 var hllTestParams []*ParrotParams = []*ParrotParams{
-	&ParrotParams{
+	{
 		Name:        "lang 1",
 		Revision:    parrotRevision,
 		BuildSystem: buildNqp,
@@ -22,7 +22,7 @@ var hllTestParams []*ParrotParams = []*ParrotParams{
 		OPS:         true,
 		DOC:         true,
 	},
-	&ParrotParams{
+	{
 		Name:        "lang 2",
 		Revision:    parrotRevision,
 		BuildSystem: buildWinxed,
@@ -31,7 +31,7 @@ var hllTestParams []*ParrotParams = []*ParrotParams{
 		OPS:         true,
 		DOC:         false,
 	},
-	&ParrotParams{
+	{
 		Name:        "lang 3",
 		Revision:    parrotRevision,
 		BuildSystem: buildPerl5,
@@ -43,19 +43,19 @@ var hllTestParams []*ParrotParams = []*ParrotParams{
 }
 
 var libraryTestParams []*ParrotParams = []*ParrotParams{
-	&ParrotParams{
+	{
 		Name:        "library 1",
 		Revision:    parrotRevision,
 		BuildSystem: buildPir,
 		TestSystem:  testRosellaWinxed,
 	},
-	&ParrotParams{
+	{
 		Name:        "library 2",
 		Revision:    parrotRevision,
 		BuildSystem: buildNqp,
 		TestSystem:  testPerl5,
 	},
-	&ParrotParams{
+	{
 		Name:        "library 2",
 		Revision:    parrotRevision,
 		BuildSystem: buildWinxed,

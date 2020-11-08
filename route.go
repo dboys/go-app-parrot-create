@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -157,18 +156,4 @@ func (a *WebServerApp) public(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.ServeFile(w, r, file)
-}
-
-func StartWebServer(addr string, port int) {
-	app := NewWebServerApp()
-
-	app.Get("/", app.index)
-	app.Post("/", app.generateProject)
-	app.Get("/public/.*", app.public)
-
-	err := http.ListenAndServe(fmt.Sprintf("%s:%d", addr, port), app)
-
-	if err != nil {
-		log.Fatalf("Could not start server: %s\n", err.Error())
-	}
 }
