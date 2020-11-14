@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -24,14 +25,20 @@ type Route struct {
 type WebServerApp struct {
 	Routes       []Route
 	DefaultRoute Handler
+	Debug        bool
+}
+
+func init() {
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 }
 
 func pattern(method, path string) string {
 	return fmt.Sprintf(`^%s %s$`, method, path)
 }
 
-func NewWebServerApp() *WebServerApp {
+func NewWebServerApp(debug bool) *WebServerApp {
 	app := &WebServerApp{
+		Debug: debug,
 		DefaultRoute: func(w http.ResponseWriter, r *http.Request) {
 			http.NotFound(w, r)
 		},
@@ -60,6 +67,10 @@ func (a *WebServerApp) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	for _, route := range a.Routes {
 		if route.Pattern.MatchString(check) == true {
+			if a.Debug {
+				log.Printf("%s %s %s\n", r.RemoteAddr, r.Method, r.URL)
+			}
+
 			route.Handler(w, r)
 			return
 		}

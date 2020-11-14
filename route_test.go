@@ -11,7 +11,7 @@ import (
 )
 
 func TestIndex(t *testing.T) {
-	app := NewWebServerApp()
+	app := NewWebServerApp(false)
 	srv := httptest.NewServer(http.HandlerFunc(app.index))
 	defer srv.Close()
 
@@ -36,7 +36,7 @@ func TestIndex(t *testing.T) {
 }
 
 func TestGenerateProject(t *testing.T) {
-	app := NewWebServerApp()
+	app := NewWebServerApp(false)
 	srv := httptest.NewServer(http.HandlerFunc(app.generateProject))
 	defer srv.Close()
 
@@ -118,7 +118,7 @@ func TestGenerateProject(t *testing.T) {
 }
 
 func TestPublicResources(t *testing.T) {
-	app := NewWebServerApp()
+	app := NewWebServerApp(false)
 	srv := httptest.NewServer(http.HandlerFunc(app.public))
 	defer srv.Close()
 
