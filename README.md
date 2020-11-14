@@ -1,3 +1,5 @@
+[![](https://travis-ci.org/dboys/go-app-parrot-create.svg?branch=master)](https://travis-ci.org/dboys/go-app-parrot-create)
+
 # go-app-parrot-create
 This web app helps create new [Parrot Virtual Machine](http://parrot.org) projects. Currently it
 supports High Level Languages (HLLs) and Libraries.
