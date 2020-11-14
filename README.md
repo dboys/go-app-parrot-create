@@ -4,21 +4,21 @@ supports High Level Languages (HLLs) and Libraries.
 
 # Running tests
 
-    go test -v -race *.go
+    go test -v -bench . -cover -race
 
 # Building
 
-    go build *.go
+    go build
 
 # Running
 
 To run as a background process with default configuration:
 
-    ./main &
+    ./go-app-parrot-create &
 
 Or with the custom options:
 
-    ./main --server=localhost:3000 --debug &
+    ./go-app-parrot-create --server=localhost:3000 --debug &
 
 # View
 
